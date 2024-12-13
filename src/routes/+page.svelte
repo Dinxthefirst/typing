@@ -10,11 +10,10 @@
   const letterTimer = 5000;
 
   function handleKeydown(event: KeyboardEvent) {
-    if (!alphabet.includes(event.key.toLowerCase())) {
+    const key = event.key.toLowerCase();
+    if (!alphabet.includes(key)) {
       return;
     }
-
-    const key = event.key.toLowerCase();
 
     pressedKeys = [...pressedKeys, key];
 
@@ -40,7 +39,7 @@
         return;
       }
       const index = Math.floor(Math.random() * alphabet.length);
-      currentLetter = alphabet[index].toUpperCase();
+      currentLetter = alphabet[index];
     }, letterTimer);
 
     return () => {
@@ -55,7 +54,7 @@
   <button on:click={startGame}>Start Game</button>
 {:else}
   <div id="score">Score: {score}</div>
-  <div id="current-letter">{currentLetter || "\u00A0"}</div>
+  <div id="current-letter">{currentLetter.toUpperCase() || "\u00A0"}</div>
   <div id="keyboard">
     {#each keyboardRows as row}
       <div class="keyboard-row">
