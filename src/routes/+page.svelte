@@ -4,6 +4,8 @@
   const emptyKey = "\u00A0";
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
   const keyboardRows = ["qwertyuiop", "asdfghjkl", "zxcvbnm" + emptyKey];
+  let startTime: number;
+  let timeBetweenCorrectLetters = $state(0);
   let letterTimer = $state(1000);
   let currentLetter = $state("");
   let pressedKeys: string[] = $state([]);
@@ -22,12 +24,9 @@
       return;
     }
 
-    const isCorrectButton = key === currentLetter;
-
-    if (isCorrectButton) {
+    if (key === currentLetter) {
       score++;
-    } else {
-      score--;
+      timeBetweenCorrectLetters = (Date.now() - startTime) / score;
     }
 
     if (letterTimer != 0) {
@@ -44,6 +43,8 @@
 
   function startGame() {
     gameStarted = true;
+    startTime = Date.now();
+    timeBetweenCorrectLetters = 0;
     nextLetter();
   }
 
@@ -121,7 +122,7 @@
 {:else}
   <div id="button-container">
     <button id="restart-button" onclick={restartGame}>Restart Game</button>
-    <div>{letterTimer} ms</div>
+    <div>{timeBetweenCorrectLetters} ms</div>
     <button id="main-menu-button" onclick={endGame}>Main Menu</button>
   </div>
   <div id="score">Score: {score}</div>
